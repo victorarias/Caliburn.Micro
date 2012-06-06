@@ -98,8 +98,10 @@
         /// Override to tell the framework where to find assemblies to inspect for views, etc.
         /// </summary>
         /// <returns>A list of assemblies to inspect.</returns>
-        protected virtual IEnumerable<Assembly> SelectAssemblies() {
-            if (Execute.InDesignMode) {
+        protected virtual IEnumerable<Assembly> SelectAssemblies()
+        {
+            if (Execute.InDesignMode)
+            {
                 var appDomain = AppDomain.CurrentDomain;
                 var assemblies = appDomain.GetType().GetMethod("GetAssemblies")
                                      .Invoke(appDomain, null) as Assembly[] ?? new Assembly[] { };
@@ -113,7 +115,8 @@
 #if SILVERLIGHT
             return new[] { Application.Current.GetType().Assembly };
 #else
-            return new[] { Assembly.GetEntryAssembly() };
+			var asm = Assembly.GetEntryAssembly();
+			return asm == null ? new Assembly[] { } : new[] { asm };
 #endif
         }
 
